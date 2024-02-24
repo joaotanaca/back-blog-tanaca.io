@@ -1,8 +1,14 @@
 services:
-    db:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_PASSWORD: root
+    pgsql:
+        image: postgres:alpine
         ports:
-            - 5432:5432
+            - '5432:5432'
+        container_name: 'pgsql'
+        restart: always
+        volumes:
+            - pg-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: root
+volumes:
+    pg-data:
