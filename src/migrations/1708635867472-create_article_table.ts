@@ -26,6 +26,7 @@ export class CreateArticleTable1708635867472 implements MigrationInterface {
                     { name: 'content', type: 'text' },
                     { name: 'views', type: 'integer', default: 0 },
                     { name: 'active', type: 'boolean', default: false },
+                    { name: 'author_id', type: 'uuid' },
                     {
                         name: 'created_at',
                         type: 'timestamptz',

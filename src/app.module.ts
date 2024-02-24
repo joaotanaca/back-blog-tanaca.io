@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import config from './configs/typeorm.config'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { DatabaseConfiguration } from './config/typeorm.config'
+import { ConfigModule } from '@nestjs/config'
 import { ArticleModule } from './article/article.module'
+import { AuthModule } from './auth/auth.module'
+import { UsersModule } from './users/users.module'
+import { APP_GUARD } from '@nestjs/core'
+import { AuthGuard } from './auth/auth.guard'
+import config from './config'
 
 @Module({
     imports: [
@@ -11,13 +16,13 @@ import { ArticleModule } from './article/article.module'
             load: [config],
         }),
         TypeOrmModule.forRootAsync({
-            inject: [ConfigService],
-            useFactory: async (configService: ConfigService) =>
-                configService.get('typeorm'),
+            useClass: DatabaseConfiguration,
         }),
         ArticleModule,
+        AuthModule,
+        UsersModule,
     ],
-    controllers: [],
-    providers: [],
+    providers: [{ provide: APP_GUARD, useClass: AuthGuard }],
+    exports: [ConfigModule],
 })
 export class AppModule {}

@@ -18,6 +18,7 @@ export class ArticleService {
         return await this.repository.find({
             relations: {
                 tags: true,
+                author: true,
             },
         })
     }
